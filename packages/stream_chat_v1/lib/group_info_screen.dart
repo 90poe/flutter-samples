@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:example/localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:stream_chat_flutter/src/option_list_tile.dart';
-import 'package:stream_chat_flutter/src/stream_svg_icon.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import 'channel_file_display_screen.dart';
@@ -106,7 +105,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                       builder: (context, state) {
                         if (!state.hasData) {
                           return Text(
-                            'Loading...',
+                            AppLocalizations.of(context).loading,
                             style: TextStyle(
                               color: StreamChatTheme.of(context)
                                   .colorTheme
@@ -139,7 +138,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                     height: 3.0,
                   ),
                   Text(
-                    '${channel.channel.memberCount} Members, ${snapshot.data?.where((e) => e.user!.online).length ?? 0} Online',
+                    '${channel.channel.memberCount} ${AppLocalizations.of(context).members}, ${snapshot.data?.where((e) => e.user!.online).length ?? 0} ${AppLocalizations.of(context).online}',
                     style: TextStyle(
                       color: StreamChatTheme.of(context)
                           .colorTheme
@@ -256,7 +255,9 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              member.role == 'owner' ? 'Owner' : '',
+                              member.role == 'owner'
+                                  ? AppLocalizations.of(context).owner
+                                  : '',
                               style: TextStyle(
                                   color: StreamChatTheme.of(context)
                                       .colorTheme
@@ -268,9 +269,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                       ),
                       Container(
                         height: 1.0,
-                        color: StreamChatTheme.of(context)
-                            .colorTheme
-                            .disabled,
+                        color: StreamChatTheme.of(context).colorTheme.disabled,
                       ),
                     ],
                   ),
@@ -311,7 +310,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '${members.length - groupMembersLength} more',
+                                  '${members.length - groupMembersLength} ${AppLocalizations.of(context).more}',
                                   style: TextStyle(
                                       color: StreamChatTheme.of(context)
                                           .colorTheme
@@ -350,7 +349,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
             Padding(
               padding: const EdgeInsets.all(7.0),
               child: Text(
-                'NAME',
+                AppLocalizations.of(context).name.toUpperCase(),
                 style: StreamChatTheme.of(context).textTheme.footnote.copyWith(
                     color: StreamChatTheme.of(context)
                         .colorTheme
@@ -368,7 +367,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                 cursorColor:
                     StreamChatTheme.of(context).colorTheme.textHighEmphasis,
                 decoration: InputDecoration.collapsed(
-                    hintText: 'Add a group name',
+                    hintText: AppLocalizations.of(context).addAGroupName,
                     hintStyle: StreamChatTheme.of(context)
                         .textTheme
                         .bodyBold
@@ -455,7 +454,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
               return OptionListTile(
                 tileColor: StreamChatTheme.of(context).colorTheme.appBg,
                 separatorColor: StreamChatTheme.of(context).colorTheme.disabled,
-                title: 'Mute group',
+                title: AppLocalizations.of(context).muteGroup,
                 titleTextStyle: StreamChatTheme.of(context).textTheme.body,
                 leading: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -489,7 +488,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
               );
             }),
         OptionListTile(
-          title: 'Pinned Messages',
+          title: AppLocalizations.of(context).pinnedMessages,
           tileColor: StreamChatTheme.of(context).colorTheme.appBg,
           titleTextStyle: StreamChatTheme.of(context).textTheme.body,
           leading: Padding(
@@ -552,7 +551,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
         OptionListTile(
           tileColor: StreamChatTheme.of(context).colorTheme.appBg,
           separatorColor: StreamChatTheme.of(context).colorTheme.disabled,
-          title: 'Photos & Videos',
+          title: AppLocalizations.of(context).photosAndVideos,
           titleTextStyle: StreamChatTheme.of(context).textTheme.body,
           leading: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -614,7 +613,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
         OptionListTile(
           tileColor: StreamChatTheme.of(context).colorTheme.appBg,
           separatorColor: StreamChatTheme.of(context).colorTheme.disabled,
-          title: 'Files',
+          title: AppLocalizations.of(context).files,
           titleTextStyle: StreamChatTheme.of(context).textTheme.body,
           leading: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -657,7 +656,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
           OptionListTile(
             tileColor: StreamChatTheme.of(context).colorTheme.appBg,
             separatorColor: StreamChatTheme.of(context).colorTheme.disabled,
-            title: 'Leave Group',
+            title: AppLocalizations.of(context).leaveGroup,
             titleTextStyle: StreamChatTheme.of(context).textTheme.body,
             leading: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -676,17 +675,19 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
             onTap: () async {
               final res = await showConfirmationDialog(
                 context,
-                title: 'Leave conversation',
-                okText: 'LEAVE',
-                question: 'Are you sure you want to leave this conversation?',
-                cancelText: 'CANCEL',
+                title: AppLocalizations.of(context).leaveConversation,
+                okText: AppLocalizations.of(context).leave.toUpperCase(),
+                question:
+                    AppLocalizations.of(context).leaveConversationAreYouSure,
+                cancelText: AppLocalizations.of(context).cancel.toUpperCase(),
                 icon: StreamSvgIcon.userRemove(
                   color: StreamChatTheme.of(context).colorTheme.accentError,
                 ),
               );
               if (res == true) {
                 final channel = StreamChannel.of(context).channel;
-                await channel.removeMembers([StreamChat.of(context).currentUser!.id]);
+                await channel
+                    .removeMembers([StreamChat.of(context).currentUser!.id]);
                 Navigator.pop(context);
               }
             },
@@ -774,8 +775,8 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                                                   .textLowEmphasis,
                                             ),
                                           ),
-                                          Text(
-                                              'No user matches these keywords...'),
+                                          Text(AppLocalizations.of(context)
+                                              .noUserMatchesTheseKeywords),
                                         ],
                                       ),
                                     ),
@@ -812,7 +813,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                   cursorColor: theme.colorTheme.textHighEmphasis,
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText: 'Search',
+                    hintText: AppLocalizations.of(context).search,
                     hintStyle: theme.textTheme.body.copyWith(
                       color: theme.colorTheme.textLowEmphasis,
                     ),
@@ -913,7 +914,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                             .textLowEmphasis,
                         size: 24.0,
                       ),
-                      'View info',
+                      AppLocalizations.of(context).viewInfo,
                       () async {
                         var client = StreamChat.of(context).client;
 
@@ -949,7 +950,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                             .textLowEmphasis,
                         size: 24.0,
                       ),
-                      'Message',
+                      AppLocalizations.of(context).message,
                       () async {
                         var client = StreamChat.of(context).client;
 
@@ -992,17 +993,20 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                         context,
                         StreamSvgIcon.userRemove(
                           color: StreamChatTheme.of(context)
-                            .colorTheme.accentError,
+                              .colorTheme
+                              .accentError,
                           size: 24.0,
                         ),
-                        'Remove From Group', () async {
+                        AppLocalizations.of(context).removeFromGroup, () async {
                       final res = await showConfirmationDialog(
                         context,
-                        title: 'Remove member',
-                        okText: 'REMOVE',
+                        title: AppLocalizations.of(context).removeMember,
+                        okText:
+                            AppLocalizations.of(context).remove.toUpperCase(),
                         question:
-                            'Are you sure you want to remove this member?',
-                        cancelText: 'CANCEL',
+                            AppLocalizations.of(context).removeMemberAreYouSure,
+                        cancelText:
+                            AppLocalizations.of(context).cancel.toUpperCase(),
                       );
 
                       if (res == true) {
@@ -1010,8 +1014,8 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                       }
                       Navigator.pop(context);
                     },
-                        color: StreamChatTheme.of(context)
-                          .colorTheme.accentError),
+                        color:
+                            StreamChatTheme.of(context).colorTheme.accentError),
                   _buildModalListTile(
                       context,
                       StreamSvgIcon.closeSmall(
@@ -1020,7 +1024,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                             .textLowEmphasis,
                         size: 24.0,
                       ),
-                      'Cancel', () {
+                      AppLocalizations.of(context).cancel, () {
                     Navigator.pop(context);
                   }),
                 ],
@@ -1046,7 +1050,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
     if (otherMember != null) {
       if (otherMember.online) {
         alternativeWidget = Text(
-          'Online',
+          AppLocalizations.of(context).online,
           style: TextStyle(
               color: StreamChatTheme.of(context)
                   .colorTheme
@@ -1055,7 +1059,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
         );
       } else {
         alternativeWidget = Text(
-          'Last seen ${Jiffy(otherMember.lastActive).fromNow()}',
+          '${AppLocalizations.of(context).lastSeen} ${Jiffy(otherMember.lastActive).fromNow()}',
           style: TextStyle(
               color: StreamChatTheme.of(context)
                   .colorTheme
@@ -1135,7 +1139,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
         title =
             '${currentMembers.map((e) => e.user!.name).join(', ')} ${exceedingMembers > 0 ? '+ $exceedingMembers' : ''}';
       } else {
-        title = 'No title';
+        title = AppLocalizations.of(context).noTitle;
       }
     } else {
       title = extraData['name'];
@@ -1145,9 +1149,9 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
 
   String _getLastSeen(User user) {
     if (user.online) {
-      return 'Online';
+      return AppLocalizations.of(context).online;
     } else {
-      return 'Last seen ${Jiffy(user.lastActive).fromNow()}';
+      return '${AppLocalizations.of(context).lastSeen} ${Jiffy(user.lastActive).fromNow()}';
     }
   }
 }
